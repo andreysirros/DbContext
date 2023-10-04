@@ -1,9 +1,9 @@
 import { Provider } from '@nestjs/common';
 import { ModelDefinition } from '@nestjs/mongoose';
-import { getTenantModelDefinitionToken, getTenantModelToken } from '../utils';
+import { getDbContextModelDefinitionToken, getDbContextModelToken } from '../utils';
 import { Connection } from 'mongoose';
 
-export const createTenancyProviders = (definitions: ModelDefinition[]): Provider[] => {
+export const createDbContextProviders = (definitions: ModelDefinition[]): Provider[] => {
   const providers: Provider[] = [];
 
   for (const definition of definitions) {
@@ -11,7 +11,7 @@ export const createTenancyProviders = (definitions: ModelDefinition[]): Provider
     const { name, schema, collection } = definition;
 
     providers.push({
-      provide: getTenantModelDefinitionToken(name),
+      provide: getDbContextModelDefinitionToken(name),
       useFactory: (modelDefinitionMap, connectionMap) => {
         const exists = modelDefinitionMap.has(name);
         if (!exists) {
@@ -27,12 +27,12 @@ export const createTenancyProviders = (definitions: ModelDefinition[]): Provider
 
     // Creating Models with connections attached
     providers.push({
-      provide: getTenantModelToken(name),
-      useFactory(tenantConnection: Connection) {
-        if (!tenantConnection) return;
-        return tenantConnection.models[name] || tenantConnection.model(name, schema, collection);
+      provide: getDbContextModelToken(name),
+      useFactory(dbContextConnection: Connection) {
+        if (!dbContextConnection) return;
+        return dbContextConnection.models[name] || dbContextConnection.model(name, schema, collection);
       },
-      inject: ['TENANT_CONNECTION'],
+      inject: ['DBCONTEXT_CONNECTION'],
     });
   }
 

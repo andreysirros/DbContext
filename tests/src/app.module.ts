@@ -1,6 +1,6 @@
 import { Module, PreconditionFailedException } from '@nestjs/common';
 import { CatsModule } from './cats/cats.module';
-import { TenancyModule } from '../../lib';
+import { DbContextModule } from '../../lib';
 import { JwtModule } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
 
@@ -30,7 +30,7 @@ const getDbNameFromRequest = (req: Request) => {
       signOptions: { expiresIn: '60s' },
     }),
     CatsModule,
-    TenancyModule.forRoot('mongodb://127.0.0.1', getDbNameFromRequest),
+    DbContextModule.forRoot('mongodb://127.0.0.1', getDbNameFromRequest),
   ],
 })
 export class AppModule {}

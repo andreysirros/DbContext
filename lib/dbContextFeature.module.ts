@@ -1,16 +1,16 @@
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { IModelDefinition } from './interfaces';
-import { createTenancyProviders } from './factories';
-// import { createTenancyProviders } from './factories';
+import { createDbContextProviders } from './factories';
+// import { createDbContextProviders } from './factories';
 // import { ModelDefinition } from './interfaces';
 
 @Global()
 @Module({})
-export class TenancyFeatureModule {
+export class DbContextFeatureModule {
   static register(models: IModelDefinition[]): DynamicModule {
-    const providers = createTenancyProviders(models);
+    const providers = createDbContextProviders(models);
     return {
-      module: TenancyFeatureModule,
+      module: DbContextFeatureModule,
       providers,
       exports: providers,
     };

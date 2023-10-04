@@ -5,37 +5,37 @@ import { Connection, Model, createConnection } from 'mongoose';
 
 @Global()
 @Module({})
-export class TenancyCoreModule {
+export class DbContextCoreModule {
   static register(uri, getDbName) {
-    const tenancyModuleUriProvider = {
-      provide: 'TENANT_MODULE_URI',
+    const dbContextModuleUriProvider = {
+      provide: 'DBCONTEXT_MODULE_URI',
       useValue: uri,
     };
 
     /* Connection Map */
     const connectionMapProvider = this.createConnectionMapProvider();
 
-    /* Tenant Context */
-    const tenantContextProvider = this.createTenantContextProvider(getDbName);
+    /* DbContext Context */
+    const dbContextContextProvider = this.createDbContextContextProvider(getDbName);
 
     const modelDefinitionMapProvider = this.createModelDefinitionMapProvider();
 
     const providers: Provider[] = [
-      tenancyModuleUriProvider,
-      tenantContextProvider,
+      dbContextModuleUriProvider,
+      dbContextContextProvider,
       connectionMapProvider,
       modelDefinitionMapProvider,
       {
-        provide: 'TENANT_CONNECTION',
+        provide: 'DBCONTEXT_CONNECTION',
         useFactory: async (database, uri, connMap, modelDefMap) => {
           return await this.getConnection(database, uri, connMap, modelDefMap);
         },
-        inject: ['TENANT_CONTEXT', 'TENANT_MODULE_URI', 'CONNECTION_MAP', 'MODEL_DEFINITION_MAP'],
+        inject: ['DBCONTEXT_CONTEXT', 'DBCONTEXT_MODULE_URI', 'CONNECTION_MAP', 'MODEL_DEFINITION_MAP'],
       },
     ];
 
     return {
-      module: TenancyCoreModule,
+      module: DbContextCoreModule,
       providers: providers,
       exports: providers,
     };
@@ -81,9 +81,9 @@ export class TenancyCoreModule {
     };
   }
 
-  private static createTenantContextProvider(getDbName): Provider {
+  private static createDbContextContextProvider(getDbName): Provider {
     return {
-      provide: 'TENANT_CONTEXT',
+      provide: 'DBCONTEXT_CONTEXT',
       scope: Scope.REQUEST,
       useFactory: (req: Request): string => {
         const dbName = getDbName(req);

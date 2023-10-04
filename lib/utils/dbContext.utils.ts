@@ -1,4 +1,4 @@
-const DEFAULT_TENANT_DB_CONNECTION = 'TenantConnection';
+const DEFAULT_DBCONTEXT_DB_CONNECTION = 'DbContextConnection';
 
 export const extractTokenFromHeader = (request: Request): string | undefined => {
   const [type, token] = request.headers['authorization']?.split(' ') ?? [];
@@ -6,13 +6,13 @@ export const extractTokenFromHeader = (request: Request): string | undefined => 
 };
 
 /**
- * Get tenant model definition name
+ * Get dbContext model definition name
  *
  * @export
  * @param {string} model
  * @returns
  */
-export function getTenantModelDefinitionToken(model: string) {
+export function getDbContextModelDefinitionToken(model: string) {
   return `${model}Definition`;
 }
 
@@ -23,10 +23,10 @@ export function getTenantModelDefinitionToken(model: string) {
  * @param {string} [name]
  * @returns
  */
-export function getTenantConnectionToken(name?: string) {
-  return name && name !== DEFAULT_TENANT_DB_CONNECTION ? `${name}TenantConnection` : DEFAULT_TENANT_DB_CONNECTION;
+export function getDbContextConnectionToken(name?: string) {
+  return name && name !== DEFAULT_DBCONTEXT_DB_CONNECTION ? `${name}DbContextConnection` : DEFAULT_DBCONTEXT_DB_CONNECTION;
 }
 
-export function getTenantModelToken(model: string) {
+export function getDbContextModelToken(model: string) {
   return `${model}Model`;
 }

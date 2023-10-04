@@ -1,1 +1,1 @@
-export * from './tenancy.decorator';
+export * from './dbContext.decorator';
