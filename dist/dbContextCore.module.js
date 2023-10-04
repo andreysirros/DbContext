@@ -5,36 +5,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var TenancyCoreModule_1;
+var DbContextCoreModule_1;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TenancyCoreModule = void 0;
+exports.DbContextCoreModule = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const mongoose_1 = require("mongoose");
-let TenancyCoreModule = TenancyCoreModule_1 = class TenancyCoreModule {
+let DbContextCoreModule = DbContextCoreModule_1 = class DbContextCoreModule {
     static register(uri, getDbName) {
-        const tenancyModuleUriProvider = {
-            provide: 'TENANT_MODULE_URI',
+        const dbContextModuleUriProvider = {
+            provide: 'DBCONTEXT_MODULE_URI',
             useValue: uri,
         };
         const connectionMapProvider = this.createConnectionMapProvider();
-        const tenantContextProvider = this.createTenantContextProvider(getDbName);
+        const dbContextContextProvider = this.createDbContextContextProvider(getDbName);
         const modelDefinitionMapProvider = this.createModelDefinitionMapProvider();
         const providers = [
-            tenancyModuleUriProvider,
-            tenantContextProvider,
+            dbContextModuleUriProvider,
+            dbContextContextProvider,
             connectionMapProvider,
             modelDefinitionMapProvider,
             {
-                provide: 'TENANT_CONNECTION',
+                provide: 'DBCONTEXT_CONNECTION',
                 useFactory: async (database, uri, connMap, modelDefMap) => {
                     return await this.getConnection(database, uri, connMap, modelDefMap);
                 },
-                inject: ['TENANT_CONTEXT', 'TENANT_MODULE_URI', 'CONNECTION_MAP', 'MODEL_DEFINITION_MAP'],
+                inject: ['DBCONTEXT_CONTEXT', 'DBCONTEXT_MODULE_URI', 'CONNECTION_MAP', 'MODEL_DEFINITION_MAP'],
             },
         ];
         return {
-            module: TenancyCoreModule_1,
+            module: DbContextCoreModule_1,
             providers: providers,
             exports: providers,
         };
@@ -68,9 +68,9 @@ let TenancyCoreModule = TenancyCoreModule_1 = class TenancyCoreModule {
             useFactory: () => new Map(),
         };
     }
-    static createTenantContextProvider(getDbName) {
+    static createDbContextContextProvider(getDbName) {
         return {
-            provide: 'TENANT_CONTEXT',
+            provide: 'DBCONTEXT_CONTEXT',
             scope: common_1.Scope.REQUEST,
             useFactory: (req) => {
                 const dbName = getDbName(req);
@@ -80,9 +80,9 @@ let TenancyCoreModule = TenancyCoreModule_1 = class TenancyCoreModule {
         };
     }
 };
-exports.TenancyCoreModule = TenancyCoreModule;
-exports.TenancyCoreModule = TenancyCoreModule = TenancyCoreModule_1 = __decorate([
+exports.DbContextCoreModule = DbContextCoreModule;
+exports.DbContextCoreModule = DbContextCoreModule = DbContextCoreModule_1 = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({})
-], TenancyCoreModule);
-//# sourceMappingURL=tenancyCore.module.js.map
+], DbContextCoreModule);
+//# sourceMappingURL=dbContextCore.module.js.map

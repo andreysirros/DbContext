@@ -18,5 +18,5 @@ __exportStar(require("./interfaces"), exports);
 __exportStar(require("./decorators"), exports);
 __exportStar(require("./utils"), exports);
 __exportStar(require("./factories"), exports);
-__exportStar(require("./tenancy.module"), exports);
+__exportStar(require("./dbContext.module"), exports);
 //# sourceMappingURL=index.js.map
